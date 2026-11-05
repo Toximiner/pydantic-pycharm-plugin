@@ -1,44 +1,26 @@
 ## PyCharm 2026.3 compatibility fork
 
-Branch `chore/dependency-refresh` builds on `fix/pycharm-263-compatibility` and targets PyCharm build `263.7307.206`.
-The plugin version is `0.4.29-py263.2`; compatibility is restricted to the 263 series.
+The `main` branch targets PyCharm `263.7307.206` and the 263 series.
+The current fork build is `0.4.29-py263.3`.
 
-This branch removes obsolete Pydantic-specific arguments from `PyDataclassParameters`,
-adapts `prepareCalleeTypeForCall` to the new type-provider API, and supplies explicit
-Unknown types for synthetic parameters and type-variable bounds. The mock SDK
-used by the test suite is also updated for the 263 APIs.
+It includes the full compatibility fix submitted as [upstream PR #1229](https://github.com/koxudaxi/pydantic-pycharm-plugin/pull/1229), updated build dependencies, and GitHub Actions builds.
 
-Build against an installed PyCharm with its bundled JetBrains Runtime 25:
+Build and run the complete test suite against an installed PyCharm with its bundled JetBrains Runtime 25:
 
 ```sh
 export JAVA_HOME=/path/to/pycharm/jbr
-./gradlew test buildPlugin -PlocalPlatformPath=/path/to/pycharm
-```
-
-Seven targeted tests pass against build `263.7307.206`, covering provider startup,
-v1/v2 keyword completion, aliases, and four generic-model scenarios. Run them with:
-
-```sh
-./gradlew test --tests '*PydanticParametersProviderTest' \
-  --tests '*PydanticCompletionTest.testKeywordArgument' \
-  --tests '*PydanticCompletionV2Test.testKeywordArgumentPopulateByName' \
-  --tests '*PydanticCompletionV18Test.testGeneric*' \
+./gradlew test buildPlugin koverXmlReport \
   -PlocalPlatformPath=/path/to/pycharm -PtestTypeShedStdlibOnly=true
 ```
 
-The stdlib-only flag excludes third-party typeshed stubs from test indexing while
-retaining standard-library types. The expanded baseline suite with stdlib typeshed ran 258 tests: 250 passed and
-8 failed before dependency updates. These remaining compatibility defects are
-tracked separately in [the dependency update plan](DEPENDENCY_UPDATE_PLAN.md).
-A full-suite pass is not claimed.
+The stdlib-only test flag retains standard-library typeshed while excluding third-party stubs from indexing. Validation results and dependency versions are recorded in [DEPENDENCY_UPDATE_PLAN.md](DEPENDENCY_UPDATE_PLAN.md).
 
-The installable archive is `build/distributions/pydantic-pycharm-plugin-0.4.29-py263.2.zip`.
-Install it using **Settings → Plugins → gear menu → Install Plugin from Disk**, then
-restart the IDE. This is an experimental compatibility build; compilation does not
-guarantee that every feature works in the IDE.
+The **Build and test** GitHub Actions workflow runs the complete test suite, builds the plugin and documentation, and uploads `compatibility-build` containing the ZIP, test reports, and coverage report. Site deployment and release-draft creation are disabled for the fork.
+
+The installable archive is `build/distributions/pydantic-pycharm-plugin-0.4.29-py263.3.zip`. Install it using **Settings → Plugins → gear menu → Install Plugin from Disk**, then restart the IDE.
 
 # Pydantic PyCharm Plugin
-[![Build](https://github.com/koxudaxi/pydantic-pycharm-plugin/actions/workflows/build.yml/badge.svg)](https://github.com/koxudaxi/pydantic-pycharm-plugin/actions/workflows/build.yml)
+[![Build](https://github.com/Toximiner/pydantic-pycharm-plugin/actions/workflows/dependency-compatibility.yml/badge.svg)](https://github.com/Toximiner/pydantic-pycharm-plugin/actions/workflows/dependency-compatibility.yml)
 [![](https://img.shields.io/jetbrains/plugin/v/12861)](https://plugins.jetbrains.com/plugin/12861-pydantic)
 ![JetBrains IntelliJ plugins](https://img.shields.io/jetbrains/plugin/d/12861-pydantic)
 ![JetBrains IntelliJ Plugins](https://img.shields.io/jetbrains/plugin/r/rating/12861-pydantic)

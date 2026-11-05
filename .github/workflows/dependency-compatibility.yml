@@ -1,4 +1,4 @@
-name: Dependency compatibility
+name: Build and test
 
 on:
   push:
@@ -25,14 +25,10 @@ jobs:
         with:
           python-version: '3.11'
           cache: pip
-      - name: Build and run targeted compatibility tests
+      - name: Build plugin and run full test suite
         run: >-
-          ./gradlew test
-          --tests '*PydanticParametersProviderTest'
-          --tests '*PydanticCompletionTest.testKeywordArgument'
-          --tests '*PydanticCompletionV2Test.testKeywordArgumentPopulateByName'
-          --tests '*PydanticCompletionV18Test.testGeneric*'
-          buildPlugin -PtestTypeShedStdlibOnly=true --console=plain
+          ./gradlew test buildPlugin koverXmlReport
+          -PtestTypeShedStdlibOnly=true --console=plain
       - name: Build documentation
         run: |
           python -m pip install -r requirements.txt
@@ -46,3 +42,4 @@ jobs:
           path: |
             build/distributions/*.zip
             build/reports/tests/test/
+            build/reports/kover/report.xml
