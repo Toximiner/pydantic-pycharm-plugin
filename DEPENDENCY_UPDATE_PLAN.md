@@ -46,3 +46,6 @@
 - MkDocs 1.6.1 + Material 9.8.0: установка в изолированное Python 3.11 окружение и `mkdocs build --strict` прошли. HTML собран в `.local/work/docs-site/`; сайт не публиковался.
 
 - Отправка workflow отклонена GitHub: OAuth-токен не имеет scope `workflow`. Зависимости публикуются отдельно в `chore/dependency-refresh`; изменения GitHub Actions подготовлены в локальной ветке `chore/github-actions-refresh`. Для отправки workflow требуется `gh auth refresh -h github.com -s workflow`.
+
+- Финальная проверка py263.2: сборка ZIP и 7 целевых тестов прошли; расширенный прогон повторил исходный результат (258 тестов, 250 прошли, 8 упали). Новых падений и изменений сообщений прежних падений нет. ZIP и SHA-256 находятся в `build/distributions/`.
+- Локальная часть обновлений завершена. GitHub Actions проверен статически, но не запущен на GitHub runner из-за отсутствия scope `workflow`; этот пункт остаётся открытым. Main, установленный плагин, релизы и сайт не изменялись.
