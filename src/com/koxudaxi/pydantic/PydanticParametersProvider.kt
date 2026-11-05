@@ -17,7 +17,7 @@ class PydanticParametersProvider : PyDataclassParametersProvider {
     override fun getDecoratorAndTypeAndParameters(project: Project): Triple<QualifiedName, PyDataclassParameters.Type, List<PyCallableParameter>> {
         val generator = PyElementGenerator.getInstance(project)
         val parameters = mutableListOf(PyCallableParameterImpl.psi(generator.createSingleStarParameter()))
-        parameters.addAll(DATACLASS_ARGUMENTS.map { name -> PyCallableParameterImpl.nonPsi(name, null) })
+        parameters.addAll(DATACLASS_ARGUMENTS.map { name -> PyCallableParameterImpl.nonPsi(name, null.withUnknownFallback()) })
         return Triple(DATACLASS_QUALIFIED_NAME, PydanticType, parameters)
     }
 
@@ -78,12 +78,6 @@ class PydanticParametersProvider : PyDataclassParametersProvider {
             type = PydanticDataclassBypassType,
             others = emptyMap(),
             fieldSpecifiers = emptyList(),
-            populateByName = null,
-            validateByName = null,
-            validateByAlias = null,
-            populateByNameArgument = null,
-            validateByAliasArgument = null,
-            validateByNameArgument = null,
         )
     }
 }

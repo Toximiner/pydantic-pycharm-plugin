@@ -9,10 +9,10 @@ jobs:
   build-deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Setup Python
-        uses: actions/setup-python@v7.0.0
+        uses: actions/setup-python@v7.1.0
         with:
           python-version: '3.11'
           architecture: 'x64'
@@ -29,6 +29,7 @@ jobs:
           mkdocs build --verbose --clean --strict
 
       - name: Deploy
+        if: github.repository == 'koxudaxi/pydantic-pycharm-plugin'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
