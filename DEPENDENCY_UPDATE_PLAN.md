@@ -55,3 +55,13 @@
 - [Build and test #42115340241](https://github.com/Toximiner/pydantic-pycharm-plugin/actions/runs/42115340241) — успешен. Загруженный HTML-отчёт подтверждает 258 тестов, 0 падений и 0 пропусков.
 - [Артефакт compatibility-build](https://github.com/Toximiner/pydantic-pycharm-plugin/actions/runs/42115340241/artifacts/13456676251) содержит проверенный ZIP `0.4.29-py263.3`, тестовые отчёты и XML покрытия.
 - Отдельная сборка Docs прошла, Deploy пропущен. Установленный плагин, upstream main, Marketplace и сайт не изменялись.
+
+## Ревью CodeRabbit в PR #1229
+
+- Исправлена подготовка generic-конструкторов: API 263 передаёт callee, поэтому вызов определяется через `PyCallExpressionNavigator`.
+- Добавлены два регрессионных теста: наследованный concrete-тип и явно указанный generic-параметр. До исправления оба падали; после него проходят.
+- Python helpers для локального SDK ищутся непосредственно в установке IDE; поддержаны обычная структура и macOS Contents, сохранён поиск в артефактах для скачанного SDK.
+- Замечание про `idea.test.execution.policy=LEGACY` не подтверждено: в SDK 263 это имя Java-класса, а не режим. Существующая отдельная настройка stdlib-only сохранена.
+- Предупреждение CodeRabbit о docstrings носит рекомендательный характер; массовые изменения документации исходников не внесены.
+- Коммит исходного PR: `29b4c53`; перенос в main: `aa1d05f`.
+- На обеих ветках `test buildPlugin koverXmlReport` прошли: 260 тестов, 0 ошибок, падений и пропусков. Пакет main остаётся `0.4.29-py263.3`.
