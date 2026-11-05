@@ -12,7 +12,7 @@
 - [x] Проверить Kover 0.9.3 → 0.9.11 и Qodana 2026.2.0 → 2026.2.2. Проверить тесты, отчёт покрытия и конфигурацию анализа; запуск облачного Qodana зависит от токена.
 - [x] Проверить Gradle 9.1.0 → 9.8.2, затем Kotlin 2.3.20 → 2.4.21 раздельно. Обновлять wrapper и gradleVersion согласованно. Проверить совместимость с JBR 25 и Kotlin runtime целевой IDE. Сохранять только проверенные изменения.
 - [ ] Проверить GitHub Actions: checkout v7, setup-java v6, setup-python v7.1.0, gradle/actions v6.2.0. Проверить требования runner и изменения интерфейсов; проверить workflow в форке без публикации релизов/документации.
-- [ ] Обновить MkDocs 1.5.3 → 1.6.1 и Material 9.5.18 → 9.8.0 совместно; проверить `mkdocs build --strict`. Публикация сайта не входит в этот план.
+- [x] Обновить MkDocs 1.5.3 → 1.6.1 и Material 9.5.18 → 9.8.0 совместно; проверить `mkdocs build --strict`. Публикация сайта не входит в этот план.
 - [ ] Повторить финальные проверки, записать результаты и ограничения, собрать ZIP новой версии, отправить ветку в форк.
 
 ## Критерии принятия
@@ -40,3 +40,9 @@
 - Gradle 9.8.2: wrapper пересоздан новой версией; `gradleVersion` синхронизирован; сборка и 7 целевых тестов прошли на JBR 25.
 
 - Kotlin 2.4.21: сборка и 7 целевых тестов прошли. Оба провайдера успешно инициализированы отдельным Java-процессом только с библиотеками установленной IDE (Kotlin runtime 2.4.21-RC); собственной stdlib в ZIP нет. Эта проверка не заменяет проверку всех функций в IDE.
+
+- GitHub Actions: checkout v7, setup-java v6, setup-python v7.1.0 и setup-gradle v6.2.0; все используют Node 24 и workflow использует ubuntu-latest. `actionlint 1.7.12 -shellcheck=` прошёл для всех workflow. Добавлен отдельный Dependency compatibility без публикации; проверка на GitHub runner ещё ожидается.
+
+- MkDocs 1.6.1 + Material 9.8.0: установка в изолированное Python 3.11 окружение и `mkdocs build --strict` прошли. HTML собран в `.local/work/docs-site/`; сайт не публиковался.
+
+- Отправка workflow отклонена GitHub: OAuth-токен не имеет scope `workflow`. Зависимости публикуются отдельно в `chore/dependency-refresh`; изменения GitHub Actions подготовлены в локальной ветке `chore/github-actions-refresh`. Для отправки workflow требуется `gh auth refresh -h github.com -s workflow`.
