@@ -1,0 +1,48 @@
+name: Dependency compatibility
+
+on:
+  push:
+    branches: [main, chore/dependency-refresh, chore/github-actions-refresh]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: jetbrains
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v6.2.0
+        with:
+          cache-provider: basic
+      - uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Build and run targeted compatibility tests
+        run: >-
+          ./gradlew test
+          --tests '*PydanticParametersProviderTest'
+          --tests '*PydanticCompletionTest.testKeywordArgument'
+          --tests '*PydanticCompletionV2Test.testKeywordArgumentPopulateByName'
+          --tests '*PydanticCompletionV18Test.testGeneric*'
+          buildPlugin -PtestTypeShedStdlibOnly=true --console=plain
+      - name: Build documentation
+        run: |
+          python -m pip install -r requirements.txt
+          cp CHANGELOG.md docs/CHANGELOG.md
+          mkdocs build --strict --site-dir build/docs
+      - name: Upload plugin and test reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: compatibility-build
+          path: |
+            build/distributions/*.zip
+            build/reports/tests/test/
