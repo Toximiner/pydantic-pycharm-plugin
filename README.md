@@ -1,9 +1,9 @@
 ## PyCharm 2026.3 compatibility fork
 
-Branch `fix/pycharm-263-compatibility` targets PyCharm build `263.7307.206`.
-The plugin version is `0.4.29-py263.1`; compatibility is restricted to the 263 series.
+Branch `chore/dependency-refresh` builds on `fix/pycharm-263-compatibility` and targets PyCharm build `263.7307.206`.
+The plugin version is `0.4.29-py263.2`; compatibility is restricted to the 263 series.
 
-This branch removes obsolete Pydantic-specific arguments from `PyDataclassParameters`
+This branch removes obsolete Pydantic-specific arguments from `PyDataclassParameters`,
 adapts `prepareCalleeTypeForCall` to the new type-provider API, and supplies explicit
 Unknown types for synthetic parameters and type-variable bounds. The mock SDK
 used by the test suite is also updated for the 263 APIs.
@@ -27,10 +27,12 @@ v1/v2 keyword completion, aliases, and four generic-model scenarios. Run them wi
 ```
 
 The stdlib-only flag excludes third-party typeshed stubs from test indexing while
-retaining standard-library types. The default full suite was interrupted during
-indexing; a full-suite pass is not claimed.
+retaining standard-library types. The expanded baseline suite with stdlib typeshed ran 258 tests: 250 passed and
+8 failed before dependency updates. These remaining compatibility defects are
+tracked separately in [the dependency update plan](DEPENDENCY_UPDATE_PLAN.md).
+A full-suite pass is not claimed.
 
-The installable archive is `build/distributions/pydantic-pycharm-plugin-0.4.29-py263.1.zip`.
+The installable archive is `build/distributions/pydantic-pycharm-plugin-0.4.29-py263.2.zip`.
 Install it using **Settings → Plugins → gear menu → Install Plugin from Disk**, then
 restart the IDE. This is an experimental compatibility build; compilation does not
 guarantee that every feature works in the IDE.
