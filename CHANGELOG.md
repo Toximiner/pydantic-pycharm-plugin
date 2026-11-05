@@ -2,11 +2,9 @@
 
 ## [Unreleased]
 
-- Refresh build, test, CI, and documentation dependencies in the PyCharm 263 fork; see DEPENDENCY_UPDATE_PLAN.md for validation and known failures.
-
-- Support PyCharm 2026.3 (263.7307.206): fix PydanticParametersProvider initialization after removal of Pydantic-specific PyDataclassParameters constructor arguments.
-- Adapt generic-model call typing to the PyCharm 263 type-provider signature.
-- Use explicit Unknown types for synthetic parameters and unbound type variables when the new Any/Unknown mode is enabled.
+- Support PyCharm 2026.3 (263.7307.206): adapt dataclass and type-provider APIs and explicit Unknown types.
+- Restore dataclass constructor signatures, default-factory inspections, and argument insertion on PyCharm 263.
+- Refresh build, test, CI, and documentation dependencies in the fork; see DEPENDENCY_UPDATE_PLAN.md for validation.
 
 - Fix crash with legacy docstring settings [[#1201](https://github.com/koxudaxi/pydantic-pycharm-plugin/issues/1201)]
 
