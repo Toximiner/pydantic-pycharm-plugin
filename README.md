@@ -1,3 +1,40 @@
+## PyCharm 2026.3 compatibility fork
+
+Branch `fix/pycharm-263-compatibility` targets PyCharm build `263.7307.206`.
+The plugin version is `0.4.29-py263.1`; compatibility is restricted to the 263 series.
+
+This branch removes obsolete Pydantic-specific arguments from `PyDataclassParameters`
+adapts `prepareCalleeTypeForCall` to the new type-provider API, and supplies explicit
+Unknown types for synthetic parameters and type-variable bounds. The mock SDK
+used by the test suite is also updated for the 263 APIs.
+
+Build against an installed PyCharm with its bundled JetBrains Runtime 25:
+
+```sh
+export JAVA_HOME=/path/to/pycharm/jbr
+./gradlew test buildPlugin -PlocalPlatformPath=/path/to/pycharm
+```
+
+Seven targeted tests pass against build `263.7307.206`, covering provider startup,
+v1/v2 keyword completion, aliases, and four generic-model scenarios. Run them with:
+
+```sh
+./gradlew test --tests '*PydanticParametersProviderTest' \
+  --tests '*PydanticCompletionTest.testKeywordArgument' \
+  --tests '*PydanticCompletionV2Test.testKeywordArgumentPopulateByName' \
+  --tests '*PydanticCompletionV18Test.testGeneric*' \
+  -PlocalPlatformPath=/path/to/pycharm -PtestTypeShedStdlibOnly=true
+```
+
+The stdlib-only flag excludes third-party typeshed stubs from test indexing while
+retaining standard-library types. The default full suite was interrupted during
+indexing; a full-suite pass is not claimed.
+
+The installable archive is `build/distributions/pydantic-pycharm-plugin-0.4.29-py263.1.zip`.
+Install it using **Settings → Plugins → gear menu → Install Plugin from Disk**, then
+restart the IDE. This is an experimental compatibility build; compilation does not
+guarantee that every feature works in the IDE.
+
 # Pydantic PyCharm Plugin
 [![Build](https://github.com/koxudaxi/pydantic-pycharm-plugin/actions/workflows/build.yml/badge.svg)](https://github.com/koxudaxi/pydantic-pycharm-plugin/actions/workflows/build.yml)
 [![](https://img.shields.io/jetbrains/plugin/v/12861)](https://plugins.jetbrains.com/plugin/12861-pydantic)
